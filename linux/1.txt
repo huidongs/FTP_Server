@@ -1,0 +1,29 @@
+void user_login(int sockfd, char *user_info,char *user_rights,int user_id){
+    int fd, nbytes,error=0;
+    char buffer[30];
+    if((fd = open("user.txt",O_RDONLY,30))<0){
+        printf("Open user File Error\n");
+        printf("ftpserver>");
+        perror(open);
+        write(sockfd,&error,N);
+        return ;
+    }
+    while(read(fd,buffer,30)){
+        //printf("%s\n", buffer);
+        if(strstr(buffer,user_info)){
+            char info[N],name[N];
+            strcpy(info,strtok(buffer," "));
+            strcpy(user_rights,strtok(NULL," "));
+            printf("A new user login user_rights:%s\n",user_rights);
+            printf("ftpserver>");
+            strcpy(name,strtok(info,":"));
+            //printf("%s\n", name);
+            strcpy(online_visitor_list[user_id],name);
+            //printf("%s\n", online_visitor_list[online_visitor]);
+            write(sockfd,&visitor,N);
+            return ;
+        }
+    }
+    write(sockfd,&error,N);
+    return ;
+}
